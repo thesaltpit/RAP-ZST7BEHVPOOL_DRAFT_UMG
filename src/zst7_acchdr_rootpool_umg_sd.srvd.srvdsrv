@@ -1,0 +1,7 @@
+@EndUserText.label: 'Service definition for accounting document root view'
+define service ZST7_ACCHDR_ROOTPOOL_UMG_SD {
+  expose ZST7_ACCHDR_ROOTPL_UMG_CONSDFT;
+  expose ZST7_ACCHDR_ROOT_POOL_UMG_DFT;
+  expose ZST7_ACCITM_CHILD_POOL_UMG_DFT;
+  expose ZST7_ACCITM_CHLDPOOL_UMG_CONDF;
+}

@@ -1,0 +1,64 @@
+@Metadata.layer: #CORE
+
+@Search.searchable: true
+annotate view ZST7_ACCITM_CHLDPOOL_UMG_CONDF
+    with 
+{
+  @UI.facet: [
+    { 
+       id:'ItemInfo',
+       type: #COLLECTION,
+       label: 'Item Details',
+       purpose: #STANDARD     
+    },
+    
+    { 
+       id: 'LineItemDetails',
+       type: #FIELDGROUP_REFERENCE,
+       parentId: 'ItemInfo',
+       targetQualifier: 'LineItemDetails' 
+    }
+    
+  
+  ]  
+
+
+  @UI.lineItem: [{ position: 10, label: 'Line Number' }]
+  @Search.defaultSearchElement: true
+  @UI.fieldGroup: [{ position: 10, label: 'Line Item Number', qualifier: 'LineItemDetails' }]
+  linenum;
+  @UI.lineItem: [{ position: 20, label: 'Posting Key' }]
+  @UI.fieldGroup: [{ position: 20, label: 'Posting Key', qualifier: 'LineItemDetails' }]
+  postkey;
+  //@UI.lineItem: [{ position: 30, label: 'Account Type' }]
+  @UI.fieldGroup: [{ position: 30, label: 'Account Type', qualifier: 'LineItemDetails' }]
+  acctyp;  //
+  //@UI.lineItem: [{ position: 40, label: 'Debit/Credit' }]
+  @UI.fieldGroup: [{ position: 40, label: 'Debit/Credit', qualifier: 'LineItemDetails' }]
+  dbcrindc;  //
+  //@UI.lineItem: [{ position: 50, label: 'Business Area' }]
+  @UI.fieldGroup: [{ position: 50, label: 'Business Area', qualifier: 'LineItemDetails' }]
+  bussarea;  //
+  @UI.lineItem: [{ position: 40, label: 'Tax Code' }]
+  @UI.fieldGroup: [{ position: 60, label: 'Tax Code', qualifier: 'LineItemDetails' }]
+  taxcode;
+  @UI.lineItem: [{ position: 50, label: 'Amount' }]
+  @UI.fieldGroup: [{ position: 70, label: 'Amount', qualifier: 'LineItemDetails' }]
+  amount;
+  @UI.lineItem: [{ position: 60, label: 'Currency' }]
+  @UI.fieldGroup: [{ position: 80, label: 'Currency Code', qualifier: 'LineItemDetails' }]
+  currcode;
+  @UI.lineItem: [{ position: 70, label: 'Tax Amount' }]
+  @UI.fieldGroup: [{ position: 90, label: 'Tax Amount', qualifier: 'LineItemDetails' }]
+  taxamt;
+  @UI.lineItem: [{ position: 80, label: 'Cost Center' }]
+  @UI.fieldGroup: [{ position: 100, label: 'Cost Center', qualifier: 'LineItemDetails' }]
+  costcntr;
+  //@UI.lineItem: [{ position: 110, label: 'Vendor' }]
+  @UI.fieldGroup: [{ position: 110, label: 'Vendor', qualifier: 'LineItemDetails' }]
+  vendor;
+
+  /* Associations */
+  //   _header;
+     
+}

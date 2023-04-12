@@ -1,0 +1,47 @@
+unmanaged implementation in class zst7_acchdr_root_pool_umg_d unique;
+
+with draft;
+
+define behavior for ZST7_ACCHDR_ROOT_POOL_UMG_DFT alias AccountingHeader
+draft table zst7acchdr_dftu
+//late numbering            //late numbering is a feature to say generate the document number
+                            //on save
+lock master total etag changeddt_time
+authorization master ( instance )
+etag master lastchngdttm     // etag is for implementing optimistic locking
+{
+  // Asking the system to generate it's own key in con_uuid, else it will always be 0000000 by default
+  // else we have to write our own logic to generate the UUID
+  field ( numbering : managed, readonly ) con_uuid;
+  // Marking all the fields as readonly as shown  below will make these fields as
+  // display only on the screen
+  field ( readonly : update ) bukrs, belnr, gjahr, cpudt, cputm, usnam;
+  create;
+  update;
+  delete;
+
+// Adding a custom copy button
+  action copyAccDoc result[1] $self;
+
+  // We use determination to generate and set some default values
+  determination generateonload on modify { create; }
+  //This triggers create by association (cba) method - METHODS cba_items FOR MODIFY
+  association _items { create; with draft; }
+}
+
+define behavior for ZST7_ACCITM_CHILD_POOL_UMG_DFT alias AccountingLines
+draft table zst7accitm_dftu
+lock dependent by _header
+authorization dependent by _header
+etag master local_chg_dt_time
+{
+  field ( readonly ) con_uuid;
+  field ( numbering : managed, readonly ) item_uuid;
+  update;
+  delete;
+  // Marking all the fields as readonly as shown  below will make these fields as
+  // display only on the screen
+  field ( readonly ) bukrs, belnr, gjahr;
+
+  association _header { with draft; }
+}

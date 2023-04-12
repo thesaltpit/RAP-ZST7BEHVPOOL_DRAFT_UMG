@@ -1,0 +1,136 @@
+@Metadata.layer: #CORE
+@UI.headerInfo:{
+    typeName: 'Document Details',
+    typeNamePlural: 'Accounting Documents',
+    title:{
+        value: 'compcd',
+        type: #STANDARD
+    },
+    description:{
+        value: 'compcddesc',
+        type: #STANDARD
+    }
+}
+
+@Search.searchable: true
+annotate view ZST7_ACCHDR_ROOTPL_UMG_CONSDFT
+    with 
+{
+  //Added tabs Accounting Header & Line items with the below options
+  @UI.facet: [
+  {
+    id:'HeaderInfo',
+    type: #COLLECTION,
+    label: 'Accounting Document Header',
+    purpose: #STANDARD
+  },
+
+  //  {
+  //    id:'LineItems',
+  //    type: #COLLECTION,
+  //    label: 'Line Items',
+  //    purpose: #STANDARD
+  //  },
+
+  {
+    id:'DocumentDetails',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'HeaderInfo',
+    purpose: #STANDARD,
+    targetQualifier: 'DocumentHeaderData',
+    label: 'Number'
+  },
+
+  {
+    id:'Details',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'HeaderInfo',
+    purpose: #STANDARD,
+    targetQualifier: 'DetailsData',
+    label: 'Type & Date'
+  },
+
+  {
+    id: 'Creator',
+    type: #FIELDGROUP_REFERENCE,
+    parentId: 'HeaderInfo',
+    purpose: #STANDARD,
+    targetQualifier: 'CreatorID',
+    label: 'Creator & Transaction'
+  },
+
+  //  {
+  //    id:'ItemsReference',
+  //    type: #IDENTIFICATION_REFERENCE,
+  //    label: 'Line Items'
+  //  }
+
+  // Showing the items data
+   {
+      id:'AccountingLineItems',
+      type: #LINEITEM_REFERENCE,
+      purpose: #STANDARD,
+      label: 'Accounting Document Line Items',
+      targetElement: '_items'
+   }
+
+  //  {
+  //      id:'DocNumber',
+  //      type: #DATAPOINT_REFERENCE,            //if we want fields at the header level we use #DATAPOINT_REFERENCE
+  //      purpose: #STANDARD,      //#HEADER,
+  //      targetQualifier: 'fiscyr',
+  //      label: 'Line Item Data'
+  //  }
+
+
+  ]
+
+  //This determines which fields will be displayed by default when the page is loaded
+  @UI.lineItem: [{ position: 10, label: 'Company Code'},
+  //****This is a very important step to make the custom button added in the behaviour definitions to appear on screen.
+  //Without it, IT WILL NOT SHOW UP ON SCREEN . NEED TO ADD #FOR ACTION step
+  { type:#FOR_ACTION,dataAction: 'copyAccDocument', label: 'Copy & Create', position: 10 }]
+  //@UI.fieldGroup: [{ position: 0, label: 'Company Code', qualifier: 'DocumentHeaderData' }]
+  @Search.defaultSearchElement: true     //This will make the search field search for enter value in this field
+  @UI.fieldGroup: [{ position: 10, label: 'Company Code' }]
+  compcd;
+  @Search.defaultSearchElement: true   //This will make the search field search for enter value in this field
+  @UI.lineItem: [{ position: 20, label: 'Document Number' }]
+  @UI.fieldGroup: [{ position: 20, label: 'Document Number', qualifier: 'DocumentHeaderData' }]
+  docno;
+  @Search.defaultSearchElement: true   //This will make the search field search for enter value in this field 
+  @UI.lineItem: [{ position: 30, label: 'Fiscal Year' }]
+  @UI.fieldGroup: [{ position: 30, label: 'Fiscal Year', qualifier: 'DocumentHeaderData' }]
+  fisyear;
+  //@Search.defaultSearchElement: true
+  @UI.lineItem: [{ position: 40, label: 'Document type' }]
+  @UI.fieldGroup: [{ position: 10, label: 'Document Type', qualifier: 'DetailsData' }]
+  doctyp;
+  @UI.lineItem: [{ position: 50, label: 'Document Date' }]
+  @UI.fieldGroup: [{ position: 20, label: 'Document Date', qualifier: 'DetailsData' }]
+  docdt;
+  //@UI.lineItem: [{ position: 60, label: 'Creation Date' }]
+  @UI.fieldGroup: [{ position: 30, label: 'Creation Date', qualifier: 'DetailsData' }]
+  sysdt;
+  //@UI.lineItem: [{ position: 70, label: 'Creation Time' }]
+  @UI.fieldGroup: [{ position: 40,label: 'Creation Time', qualifier: 'DetailsData' }]
+  systime;
+  @UI.lineItem: [{ position: 60, label: 'User Name' }]
+  @UI.fieldGroup: [{ position: 10, label: 'Creator ID', qualifier: 'CreatorID' }]
+  usernm;
+  //    @UI.lineItem: [{ position: 70, label: 'Document Text' }]
+  //    doctxt;
+  @UI.lineItem: [{ position: 70, label: 'Transaction' }]
+  @UI.fieldGroup: [{ position: 20, label: 'Transaction Code', qualifier: 'CreatorID' }]
+  tcode;
+  //    @UI.lineItem: [{ position: 90, label: 'Reference' }]
+  @UI.fieldGroup: [{ position: 30, label: 'Reference', qualifier: 'CreatorID' }]
+  refno;
+  @UI.fieldGroup: [{ position: 40, label: 'Header Text', qualifier: 'CreatorID' }]
+  doctxt;
+
+  /* Associations */
+  //    _compCdDesc;
+  //    _items;
+     
+}

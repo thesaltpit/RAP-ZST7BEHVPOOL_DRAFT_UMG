@@ -1,0 +1,20 @@
+projection;
+use draft;
+
+define behavior for ZST7_ACCHDR_ROOTPL_UMG_CONSDFT alias AccountingHeader
+{
+  use create;
+  use update;
+  use delete;
+
+  use action copyAccDoc as copyAccDocument;
+  use association _items { create; with draft; }
+}
+
+define behavior for ZST7_ACCITM_CHLDPOOL_UMG_CONDF alias AccountingItems
+{
+  use update;
+  use delete;
+
+  use association _header { with draft; }
+}
