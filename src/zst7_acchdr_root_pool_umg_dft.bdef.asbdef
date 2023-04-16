@@ -15,7 +15,7 @@ etag master lastchngdttm     // etag is for implementing optimistic locking
   field ( numbering : managed, readonly ) con_uuid;
   // Marking all the fields as readonly as shown  below will make these fields as
   // display only on the screen
-  field ( readonly : update ) bukrs, belnr, gjahr, cpudt, cputm, usnam;
+  field ( readonly : update ) bukrs, belnr, gjahr, cpudt, cputm, usnam, lastchngdttm;
   create;
   update;
   delete;

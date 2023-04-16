@@ -89,8 +89,8 @@ CLASS lhc_accountingheader IMPLEMENTATION.
 
   METHOD update.
 
-    DATA: lt_acc_hdr TYPE TABLE OF zst7acchdr_dftum,
-          ls_acc_hdr TYPE zst7acchdr_dftum.
+    DATA: lt_acc_hdr  TYPE TABLE OF zst7acchdr_dftum,
+          ls_acc_hdr  TYPE zst7acchdr_dftum.
 
 
 * In Update I do not get access to the lhc_buffer=>mt_acc_hdr or lhc_buffer=>mt_acc_itm
@@ -136,6 +136,10 @@ CLASS lhc_accountingheader IMPLEMENTATION.
           IF sy-subrc EQ 0 AND <control>-bktxt EQ '01'.
             ls_acc_hdr-bktxt = ls_hdr_details-bktxt.
           ENDIF.
+
+* Setting the changed date time value
+          CONVERT DATE sy-datum TIME sy-uzeit INTO TIME STAMP ls_acc_hdr-lastchngdttm
+                       TIME ZONE sy-zonlo.
         ENDIF.
       ENDIF.
 

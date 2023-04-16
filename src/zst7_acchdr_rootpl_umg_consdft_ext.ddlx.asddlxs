@@ -115,6 +115,9 @@ annotate view ZST7_ACCHDR_ROOTPL_UMG_CONSDFT
   //@UI.lineItem: [{ position: 70, label: 'Creation Time' }]
   @UI.fieldGroup: [{ position: 40,label: 'Creation Time', qualifier: 'DetailsData' }]
   systime;
+//  @UI.lineItem: [{ position: 80, label: 'Changed Date/Time' }]
+  @UI.fieldGroup: [{ position: 50, label: 'Changed Date/Time', qualifier: 'DetailsData' }]
+  lastchdttm;
   @UI.lineItem: [{ position: 60, label: 'User Name' }]
   @UI.fieldGroup: [{ position: 10, label: 'Creator ID', qualifier: 'CreatorID' }]
   usernm;
