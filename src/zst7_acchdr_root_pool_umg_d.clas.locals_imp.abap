@@ -117,50 +117,24 @@ CLASS lhc_accountingheader IMPLEMENTATION.
       IF sy-subrc EQ 0.
         ASSIGN ls_hdr_details-%control TO FIELD-SYMBOL(<control>).
         IF sy-subrc EQ 0.
-          IF <control>-blart = '01'.
-            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                           bukrs = ls_hdr_details-bukrs
-                                                           belnr = ls_hdr_details-belnr
-                                                           gjahr = ls_hdr_details-gjahr.
-            IF sy-subrc EQ 0.
-              ls_acc_hdr-blart = ls_hdr_details-blart.
-            ENDIF.
+          READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                         bukrs = ls_hdr_details-bukrs
+                                                         belnr = ls_hdr_details-belnr
+                                                         gjahr = ls_hdr_details-gjahr.
+          IF sy-subrc EQ 0 AND <control>-blart = '01'.
+            ls_acc_hdr-blart = ls_hdr_details-blart.
           ENDIF.
-          IF <control>-bldat = '01'.
-            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                           bukrs = ls_hdr_details-bukrs
-                                                           belnr = ls_hdr_details-belnr
-                                                           gjahr = ls_hdr_details-gjahr.
-            IF sy-subrc EQ 0.
-              ls_acc_hdr-bldat = ls_hdr_details-bldat.
-            ENDIF.
+          IF sy-subrc EQ 0 AND <control>-bldat = '01'.
+            ls_acc_hdr-bldat = ls_hdr_details-bldat.
           ENDIF.
-          IF <control>-tcode = '01'.
-            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                           bukrs = ls_hdr_details-bukrs
-                                                           belnr = ls_hdr_details-belnr
-                                                           gjahr = ls_hdr_details-gjahr.
-            IF sy-subrc EQ 0.
-              ls_acc_hdr-tcode = ls_hdr_details-tcode.
-            ENDIF.
+          IF sy-subrc EQ 0 AND <control>-tcode = '01'.
+            ls_acc_hdr-tcode = ls_hdr_details-tcode.
           ENDIF.
-          IF <control>-xblnr = '01'.
-            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                           bukrs = ls_hdr_details-bukrs
-                                                           belnr = ls_hdr_details-belnr
-                                                           gjahr = ls_hdr_details-gjahr.
-            IF sy-subrc EQ 0.
-              ls_acc_hdr-xblnr = ls_hdr_details-xblnr.
-            ENDIF.
+          IF sy-subrc EQ 0 AND <control>-xblnr = '01'.
+            ls_acc_hdr-xblnr = ls_hdr_details-xblnr.
           ENDIF.
-          IF <control>-bktxt = '01'.
-            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                           bukrs = ls_hdr_details-bukrs
-                                                           belnr = ls_hdr_details-belnr
-                                                           gjahr = ls_hdr_details-gjahr.
-            IF sy-subrc EQ 0.
-              ls_acc_hdr-bktxt = ls_hdr_details-bktxt.
-            ENDIF.
+          IF sy-subrc EQ 0 AND <control>-bktxt = '01'.
+            ls_acc_hdr-bktxt = ls_hdr_details-bktxt.
           ENDIF.
         ENDIF.
       ENDIF.
