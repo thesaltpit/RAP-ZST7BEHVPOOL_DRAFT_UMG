@@ -1,3 +1,5 @@
+* This class definition is to be manually added to read the updated values in Create
+* and CBA methods, which will then passed to the Save method to update the values
 CLASS lhc_buffer DEFINITION.
 
 * Defining static variables
