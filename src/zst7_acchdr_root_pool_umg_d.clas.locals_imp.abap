@@ -121,19 +121,19 @@ CLASS lhc_accountingheader IMPLEMENTATION.
                                                          bukrs = ls_hdr_details-bukrs
                                                          belnr = ls_hdr_details-belnr
                                                          gjahr = ls_hdr_details-gjahr.
-          IF sy-subrc EQ 0 AND <control>-blart = '01'.
+          IF sy-subrc EQ 0 AND <control>-blart EQ '01'.
             ls_acc_hdr-blart = ls_hdr_details-blart.
           ENDIF.
-          IF sy-subrc EQ 0 AND <control>-bldat = '01'.
+          IF sy-subrc EQ 0 AND <control>-bldat EQ '01'.
             ls_acc_hdr-bldat = ls_hdr_details-bldat.
           ENDIF.
-          IF sy-subrc EQ 0 AND <control>-tcode = '01'.
+          IF sy-subrc EQ 0 AND <control>-tcode EQ '01'.
             ls_acc_hdr-tcode = ls_hdr_details-tcode.
           ENDIF.
-          IF sy-subrc EQ 0 AND <control>-xblnr = '01'.
+          IF sy-subrc EQ 0 AND <control>-xblnr EQ '01'.
             ls_acc_hdr-xblnr = ls_hdr_details-xblnr.
           ENDIF.
-          IF sy-subrc EQ 0 AND <control>-bktxt = '01'.
+          IF sy-subrc EQ 0 AND <control>-bktxt EQ '01'.
             ls_acc_hdr-bktxt = ls_hdr_details-bktxt.
           ENDIF.
         ENDIF.
