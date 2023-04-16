@@ -19,7 +19,7 @@ CLASS lhc_accountingheader DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING values FOR DELETE accountingheader.
 
     METHODS update FOR MODIFY
-      IMPORTING entities FOR UPDATE accountingheader.
+      IMPORTING hdr_details FOR UPDATE accountingheader.
 
     METHODS lock FOR LOCK
       IMPORTING keys FOR LOCK accountingheader.
@@ -88,21 +88,95 @@ CLASS lhc_accountingheader IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD update.
-    DATA(lv_idx) = abap_true.
 
-    READ TABLE entities INTO DATA(ls_entities) INDEX 1.
+    DATA: lt_acc_hdr TYPE TABLE OF zst7acchdr_dftum,
+          ls_acc_hdr TYPE zst7acchdr_dftum.
+
+
+* In Update I do not get access to the lhc_buffer=>mt_acc_hdr or lhc_buffer=>mt_acc_itm
+* and hence we will update the header and line item table here itself and not in the
+* Save method.
+
+****** Start of logic to update the Header table *********
+** Picking the header details from table zst7acchdr_dftum
+    SELECT *
+    FROM zst7acchdr_dftum
+    INTO TABLE lt_acc_hdr
+    FOR ALL ENTRIES IN hdr_details
+    WHERE con_uuid = hdr_details-con_uuid
+      AND bukrs = hdr_details-bukrs
+      AND belnr = hdr_details-belnr
+      AND gjahr = hdr_details-gjahr.
+
     IF sy-subrc EQ 0.
-      ASSIGN ls_entities-%control TO FIELD-SYMBOL(<control>).
+
+* <control> will list out all the fields where a change has been made.
+* If the value is 00 then no change has been made, else if it 01 then the field
+* value has been changed.
+      READ TABLE hdr_details INTO DATA(ls_hdr_details) INDEX 1.
       IF sy-subrc EQ 0.
-        IF <control>-blart = '01'.
-          READ TABLE entities INTO DATA(ls_entities_blart) INDEX 1.
-        ELSEIF <control>-bldat = '01'.
-        ELSEIF <control>-tcode = '01'.
-        ELSEIF <control>-xblnr = '01'.
-        ELSEIF <control>-bktxt = '01'.
+        ASSIGN ls_hdr_details-%control TO FIELD-SYMBOL(<control>).
+        IF sy-subrc EQ 0.
+          IF <control>-blart = '01'.
+            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                           bukrs = ls_hdr_details-bukrs
+                                                           belnr = ls_hdr_details-belnr
+                                                           gjahr = ls_hdr_details-gjahr.
+            IF sy-subrc EQ 0.
+              ls_acc_hdr-blart = ls_hdr_details-blart.
+            ENDIF.
+          ENDIF.
+          IF <control>-bldat = '01'.
+            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                           bukrs = ls_hdr_details-bukrs
+                                                           belnr = ls_hdr_details-belnr
+                                                           gjahr = ls_hdr_details-gjahr.
+            IF sy-subrc EQ 0.
+              ls_acc_hdr-bldat = ls_hdr_details-bldat.
+            ENDIF.
+          ENDIF.
+          IF <control>-tcode = '01'.
+            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                           bukrs = ls_hdr_details-bukrs
+                                                           belnr = ls_hdr_details-belnr
+                                                           gjahr = ls_hdr_details-gjahr.
+            IF sy-subrc EQ 0.
+              ls_acc_hdr-tcode = ls_hdr_details-tcode.
+            ENDIF.
+          ENDIF.
+          IF <control>-xblnr = '01'.
+            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                           bukrs = ls_hdr_details-bukrs
+                                                           belnr = ls_hdr_details-belnr
+                                                           gjahr = ls_hdr_details-gjahr.
+            IF sy-subrc EQ 0.
+              ls_acc_hdr-xblnr = ls_hdr_details-xblnr.
+            ENDIF.
+          ENDIF.
+          IF <control>-bktxt = '01'.
+            READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
+                                                           bukrs = ls_hdr_details-bukrs
+                                                           belnr = ls_hdr_details-belnr
+                                                           gjahr = ls_hdr_details-gjahr.
+            IF sy-subrc EQ 0.
+              ls_acc_hdr-bktxt = ls_hdr_details-bktxt.
+            ENDIF.
+          ENDIF.
         ENDIF.
       ENDIF.
+
+
+*Updating the header table. After this the Save method is called where
+*lhc_buffer=>mt_acc_hdr is called and the line item from the header buffer table will
+*be deleted by the system.
+      MODIFY zst7acchdr_dftum FROM ls_acc_hdr.
+
     ENDIF.
+
+
+* For the line items the changed data is getting captured in the lhc_buffer=>mt_acc_itm
+* table and hence gets updated in the Save method below
+* So no need to add any custom logic for line items here in Update
 
   ENDMETHOD.
 
