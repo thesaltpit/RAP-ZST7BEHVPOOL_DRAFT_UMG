@@ -89,8 +89,8 @@ CLASS lhc_accountingheader IMPLEMENTATION.
 
   METHOD update.
 
-    DATA: lt_acc_hdr  TYPE TABLE OF zst7acchdr_dftum,
-          ls_acc_hdr  TYPE zst7acchdr_dftum.
+    DATA: lt_acc_hdr TYPE TABLE OF zst7acchdr_dftum,
+          ls_acc_hdr TYPE zst7acchdr_dftum.
 
 
 * In Update I do not get access to the lhc_buffer=>mt_acc_hdr or lhc_buffer=>mt_acc_itm
@@ -438,7 +438,26 @@ CLASS lhc_accountinglines IMPLEMENTATION.
 
 * This method will be called if we make any changes to line item values
 * and then save the entry
-    DATA: ls_lines_output TYPE zst7accitm_dftum.
+    DATA: ls_lines_hdr    TYPE zst7acchdr_dftum,
+          ls_lines_output TYPE zst7accitm_dftum.
+
+* Logic to change the created date/time field on changing just the line items
+    READ TABLE line_items INTO DATA(lines) INDEX 1.
+    IF sy-subrc EQ 0.
+      SELECT SINGLE *
+      FROM zst7acchdr_dftum
+      INTO ls_lines_hdr
+      WHERE bukrs = lines-bukrs
+        AND belnr = lines-belnr
+        AND gjahr = lines-gjahr.
+
+      IF sy-subrc EQ 0.
+        CONVERT DATE sy-datum TIME sy-uzeit INTO TIME STAMP DATA(chgdatetime)
+                TIME ZONE sy-zonlo.
+        ls_lines_hdr-lastchngdttm = chgdatetime.
+        MODIFY zst7acchdr_dftum FROM ls_lines_hdr.
+      ENDIF.
+    ENDIF.
 
     LOOP AT line_items INTO DATA(line_data_wa).
       MOVE-CORRESPONDING line_data_wa TO ls_lines_output.
