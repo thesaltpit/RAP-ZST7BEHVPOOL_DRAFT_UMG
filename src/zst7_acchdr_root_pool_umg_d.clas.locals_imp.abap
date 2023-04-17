@@ -452,9 +452,9 @@ CLASS lhc_accountinglines IMPLEMENTATION.
         AND gjahr = lines-gjahr.
 
       IF sy-subrc EQ 0.
-        CONVERT DATE sy-datum TIME sy-uzeit INTO TIME STAMP DATA(chgdatetime)
+        CONVERT DATE sy-datum TIME sy-uzeit INTO TIME STAMP DATA(lastchgdttm)
                 TIME ZONE sy-zonlo.
-        ls_lines_hdr-lastchngdttm = chgdatetime.
+        ls_lines_hdr-lastchngdttm = lastchgdttm.
         MODIFY zst7acchdr_dftum FROM ls_lines_hdr.
       ENDIF.
     ENDIF.
