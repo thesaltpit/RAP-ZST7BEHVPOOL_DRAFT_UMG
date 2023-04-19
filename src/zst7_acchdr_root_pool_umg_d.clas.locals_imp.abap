@@ -118,9 +118,9 @@ CLASS lhc_accountingheader IMPLEMENTATION.
         ASSIGN ls_hdr_details-%control TO FIELD-SYMBOL(<control>).
         IF sy-subrc EQ 0.
           READ TABLE lt_acc_hdr INTO ls_acc_hdr WITH KEY con_uuid = ls_hdr_details-con_uuid
-                                                         bukrs = ls_hdr_details-bukrs
-                                                         belnr = ls_hdr_details-belnr
-                                                         gjahr = ls_hdr_details-gjahr.
+                                                            bukrs = ls_hdr_details-bukrs
+                                                            belnr = ls_hdr_details-belnr
+                                                            gjahr = ls_hdr_details-gjahr.
           IF sy-subrc EQ 0 AND <control>-blart EQ '01'.
             ls_acc_hdr-blart = ls_hdr_details-blart.
           ENDIF.

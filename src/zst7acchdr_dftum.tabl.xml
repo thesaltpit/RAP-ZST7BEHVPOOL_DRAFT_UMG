@@ -7,7 +7,7 @@
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
-    <DDTEXT>Accouting Document Table for Unmanaged Scenario</DDTEXT>
+    <DDTEXT>Accouting Document Header Table for Unmanaged Scenario</DDTEXT>
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>3</EXCLASS>
