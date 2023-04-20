@@ -22,7 +22,7 @@ CLASS lhc_accountingheader DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING hdr_details FOR UPDATE accountingheader.
 
     METHODS lock FOR LOCK
-      IMPORTING keys FOR LOCK accountingheader.
+      IMPORTING hdr_details FOR LOCK accountingheader.
 
     METHODS read FOR READ
       IMPORTING hdr_details FOR READ accountingheader RESULT result.
@@ -159,6 +159,34 @@ CLASS lhc_accountingheader IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD lock.
+
+*    DATA: ls_header TYPE zst7acchdr_dftu.
+*
+** Had to move this check logic from the read method to the lock method
+** as it was otherwise throwing a dump
+*    READ TABLE hdr_details INTO DATA(ls_head_det) INDEX 1.
+*    IF sy-subrc EQ 0.
+*
+*      SELECT SINGLE *
+*        FROM zst7acchdr_dftu
+*        INTO ls_header
+*        WHERE con_uuid = ls_head_det-con_uuid.
+*
+*      IF sy-subrc EQ 0.
+*
+*        APPEND VALUE #( %is_draft = '01'
+*                        con_uuid = ls_header-con_uuid
+*                        %msg = new_message(
+*                               id = 'ZST7_MESSAGES'
+*                               number = '006'
+*                               severity = if_abap_behv_message=>severity-error
+*                               v1 = ls_header-belnr
+*                              )
+*                      ) TO reported-accountingheader.
+*
+*      ENDIF.
+*
+*    ENDIF.
 
   ENDMETHOD.
 
