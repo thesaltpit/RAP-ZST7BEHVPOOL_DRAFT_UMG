@@ -194,6 +194,9 @@ CLASS lhc_accountingheader IMPLEMENTATION.
 
     DATA: ls_header TYPE zst7acchdr_dftu.
 
+* Logic was added to throw an error message if the user tries to copy & create on a draft
+* document. Ideally it should only be possible to do it on saved documents which is
+* working. But on draft documents it is throwing an etag dump -1
 * Need to check this. Getting an etag dump
     READ TABLE hdr_details INTO DATA(ls_head_det) INDEX 1.
     IF sy-subrc EQ 0.
@@ -544,11 +547,11 @@ ENDCLASS.
 CLASS lsc_zst7_acchdr_root_pool_umg_ IMPLEMENTATION.
 
   METHOD check_before_save.
-    DATA(lv_idx) = abap_true.
+
   ENDMETHOD.
 
   METHOD finalize.
-    DATA(lv_idx) = abap_true.
+
   ENDMETHOD.
 
   METHOD save.
