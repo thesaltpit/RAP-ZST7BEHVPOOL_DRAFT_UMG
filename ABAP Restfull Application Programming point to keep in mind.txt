@@ -1,0 +1,4 @@
+what is behaviorial pool
+can we have more than one behaviorial pools for behaviour definition
+managed & unmanaged scenarios
+A root can have 1 or many childs
